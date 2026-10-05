@@ -1,0 +1,147 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "yz-personal",
+  "owner": {
+    "name": "Yihan Zhao"
+  },
+  "metadata": {
+    "description": "Aggregator for upstream skills that ship no marketplace of their own. Every entry points at its upstream repository, pinned to the last upstream commit that touched the skill; a scheduled job moves the pins forward, so Claude Code, Codex and claude.ai all receive upstream changes, and the git history records each one."
+  },
+  "plugins": [
+    {
+      "name": "text-to-lottie",
+      "description": "Author production-ready Lottie/Bodymovin JSON for the Skia Skottie player: SVG/logo/type animation, loaders, UI microinteractions, lower thirds, data/stat animation, product promos.",
+      "category": "design",
+      "homepage": "https://github.com/diffusionstudio/lottie",
+      "author": {
+        "name": "Diffusion Studio"
+      },
+      "strict": false,
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/diffusionstudio/lottie.git",
+        "path": "skills/text-to-lottie",
+        "ref": "main",
+        "sha": "f7d4f9f56ae6e21399dbfc014773fa2d0dce6ee2"
+      }
+    },
+    {
+      "name": "no-ai-slop",
+      "description": "Edit drafts into sharper, more human writing while preserving the writer's voice, or detect AI-slop patterns without rewriting.",
+      "category": "writing",
+      "homepage": "https://github.com/petergyang/no-ai-slop",
+      "author": {
+        "name": "Peter Yang"
+      },
+      "strict": false,
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/petergyang/no-ai-slop.git",
+        "path": "skills/no-ai-slop",
+        "ref": "main",
+        "sha": "000650b156983f5159695b441477f4e63b25dc85"
+      }
+    },
+    {
+      "name": "unlazy",
+      "description": "Completion discipline for substantial build work: acceptance gates written before execution, a decomposed work tree, approved runnable checks, and re-verification before reporting.",
+      "category": "engineering",
+      "homepage": "https://github.com/Leonxlnx/unlazy",
+      "author": {
+        "name": "Leon Lin"
+      },
+      "strict": false,
+      "source": {
+        "source": "url",
+        "url": "https://github.com/Leonxlnx/unlazy.git",
+        "ref": "main",
+        "sha": "16671491f6679ad9378f52604d3bc2415b4120c7"
+      }
+    },
+    {
+      "name": "cross-layer-drift-sweep",
+      "description": "After a rename or contract change, check every downstream layer (storage, runtime, adapters, UI, docs) for stale fields, defaults, types, contracts or wording.",
+      "category": "engineering",
+      "homepage": "https://github.com/MiniMax-AI/minimax-code/tree/main/.agents/skills/cross-layer-drift-sweep",
+      "author": {
+        "name": "MiniMax"
+      },
+      "strict": false,
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/MiniMax-AI/minimax-code.git",
+        "path": ".agents/skills/cross-layer-drift-sweep",
+        "ref": "main",
+        "sha": "ac848adf9cafbc5413b2b9ed8b807f86027170f9"
+      }
+    },
+    {
+      "name": "database-lookup",
+      "description": "Reproducible lookups against documented public database APIs (ClinPGx/CPIC, openFDA, DailyMed, ClinVar, dbSNP, gnomAD, ChEMBL, UniProt, SEC EDGAR, FRED and about seventy more) with explicit endpoints and provenance.",
+      "category": "research",
+      "homepage": "https://github.com/K-Dense-AI/scientific-agent-skills/tree/main/skills/database-lookup",
+      "author": {
+        "name": "K-Dense Inc."
+      },
+      "strict": false,
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/K-Dense-AI/scientific-agent-skills.git",
+        "path": "skills/database-lookup",
+        "ref": "main",
+        "sha": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c"
+      }
+    },
+    {
+      "name": "scientific-critical-thinking",
+      "description": "Appraise scientific claims and evidence quality: study design validity, bias and confounding, statistical interpretation, GRADE and Cochrane risk-of-bias.",
+      "category": "research",
+      "homepage": "https://github.com/K-Dense-AI/scientific-agent-skills/tree/main/skills/scientific-critical-thinking",
+      "author": {
+        "name": "K-Dense Inc."
+      },
+      "strict": false,
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/K-Dense-AI/scientific-agent-skills.git",
+        "path": "skills/scientific-critical-thinking",
+        "ref": "main",
+        "sha": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c"
+      }
+    },
+    {
+      "name": "figma-generate-project-plan",
+      "description": "Turn a PRD plus codebase context into a FigJam project-plan board, section by section, through the Figma MCP server.",
+      "category": "design",
+      "homepage": "https://github.com/figma/mcp-server-guide/tree/main/workflow-skills/generate-project-plan",
+      "author": {
+        "name": "Figma"
+      },
+      "strict": false,
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/figma/mcp-server-guide.git",
+        "path": "workflow-skills/generate-project-plan",
+        "ref": "main",
+        "sha": "3590366424deba5651026319b71b291d10004f1b"
+      }
+    },
+    {
+      "name": "figma-video-interaction-mapper",
+      "description": "Turn a UI screen recording into an annotated Figma storyboard of interaction states. Needs ffmpeg and Python with Pillow locally.",
+      "category": "design",
+      "homepage": "https://github.com/figma/mcp-server-guide/tree/main/workflow-skills/video-interaction-mapper",
+      "author": {
+        "name": "Figma"
+      },
+      "strict": false,
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/figma/mcp-server-guide.git",
+        "path": "workflow-skills/video-interaction-mapper",
+        "ref": "main",
+        "sha": "a72c41ef5cd8ea88c96dd4b2e73311463b1cf6bc"
+      }
+    }
+  ]
+}

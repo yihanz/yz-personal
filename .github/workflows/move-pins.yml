@@ -1,0 +1,36 @@
+name: Move upstream pins
+
+on:
+  schedule:
+    - cron: "17 9 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: move-pins
+  cancel-in-progress: false
+
+jobs:
+  move-pins:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate marketplace file
+        run: python3 -c "import json; d=json.load(open('.claude-plugin/marketplace.json')); assert d['name']=='yz-personal' and d['plugins']"
+      - name: Move pins to the newest upstream commits
+        id: move
+        run: |
+          msg="$(python3 scripts/bump_pins.py)"
+          echo "msg=$msg" >> "$GITHUB_OUTPUT"
+      - name: Commit when anything moved
+        if: steps.move.outputs.msg != ''
+        env:
+          MSG: ${{ steps.move.outputs.msg }}
+        run: |
+          git config user.name "yz-personal pin job"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .claude-plugin/marketplace.json CHANGELOG.md
+          git commit -m "$MSG"
+          git push

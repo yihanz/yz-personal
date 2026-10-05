@@ -1,0 +1,72 @@
+{
+  "about": "Install manifest for Yihan's agent tooling. bootstrap.py applies it to a Mac (Claude Code, Codex, Homebrew, the daily updater); update_local.sh keeps it current. claude.ai and Cowork are configured in the web app and are listed here for the record. The reasoning for each entry lives in the AI Setup Registry in Notion.",
+  "claude_code": {
+    "marketplaces": {
+      "claude-plugins-official": "anthropics/claude-plugins-official",
+      "superwhisper": "superultrainc/superwhisper-claude-code",
+      "interfaces": "jakubkrehel/skills",
+      "taste-skill": "Leonxlnx/taste-skill",
+      "impeccable": "pbakaus/impeccable",
+      "agent-browser": "vercel-labs/agent-browser",
+      "yz-personal": "yihanz/yz-personal"
+    },
+    "plugins": {
+      "vercel@claude-plugins-official": true,
+      "figma@claude-plugins-official": true,
+      "hyperframes@claude-plugins-official": false,
+      "superwhisper@superwhisper": true,
+      "interfaces@interfaces": true,
+      "taste-skill@taste-skill": false,
+      "impeccable@impeccable": true,
+      "agent-browser@agent-browser": true,
+      "text-to-lottie@yz-personal": true,
+      "no-ai-slop@yz-personal": true,
+      "unlazy@yz-personal": true,
+      "cross-layer-drift-sweep@yz-personal": true,
+      "database-lookup@yz-personal": true,
+      "scientific-critical-thinking@yz-personal": true,
+      "figma-generate-project-plan@yz-personal": true,
+      "figma-video-interaction-mapper@yz-personal": true
+    },
+    "env": {
+      "HYPERFRAMES_NO_TELEMETRY": "1"
+    }
+  },
+  "codex": {
+    "marketplaces": {
+      "taste-skill": "Leonxlnx/taste-skill",
+      "impeccable": "pbakaus/impeccable",
+      "agent-browser": "vercel-labs/agent-browser"
+    },
+    "plugins": [
+      "taste-skill@taste-skill",
+      "impeccable@impeccable",
+      "agent-browser@agent-browser",
+      "no-ai-slop@openai-curated-remote",
+      "hyperframes@openai-curated-remote",
+      "figma@openai-curated-remote"
+    ],
+    "skills": [
+      { "source": "Leonxlnx/unlazy" },
+      { "source": "MiniMax-AI/minimax-code", "skills": ["cross-layer-drift-sweep"] },
+      { "source": "K-Dense-AI/scientific-agent-skills", "skills": ["database-lookup", "scientific-critical-thinking"] }
+    ]
+  },
+  "skills_cli_existing": {
+    "note": "Installed earlier with npx skills for every detected agent; kept current by the daily updater.",
+    "emilkowalski/skill": ["animate", "animation-vocabulary", "apple-design", "emil-design-eng", "find-animation-opportunities", "improve-animations", "pick-ui-library", "prototype", "review-animations"]
+  },
+  "claude_ai": {
+    "github_marketplaces": [
+      "pbakaus/impeccable",
+      "Leonxlnx/taste-skill",
+      "blader/humanizer",
+      "mattpocock/skills",
+      "Yuzzyuk/marketing-os",
+      "yihanz/yz-personal",
+      "heygen-com/hyperframes"
+    ],
+    "note": "Customize > Plugins > Add marketplace, then turn on Sync automatically for each. Anthropic directory and knowledge-work plugins are installed from the directory and update on their own."
+  },
+  "brew": ["agent-browser", "yt-dlp", "ffmpeg"]
+}
