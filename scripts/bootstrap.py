@@ -27,8 +27,10 @@ def run(*cmd, ok_fail=False):
     if DRY:
         return ""
     r = subprocess.run(cmd, capture_output=True, text=True, env=ENV)
-    if r.returncode and not ok_fail:
-        print(r.stdout + r.stderr)
+    if r.returncode:
+        print(f"  ! exit {r.returncode}: " + (r.stdout + r.stderr).strip()[-600:])
+        if not ok_fail:
+            sys.exit(r.returncode)
     return r.stdout
 
 
