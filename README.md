@@ -4,26 +4,52 @@ A plugin marketplace that carries agent skills whose authors publish no marketpl
 
 ## What it carries
 
-| Plugin | Upstream | Skill |
-|---|---|---|
-| text-to-lottie | diffusionstudio/lottie | `skills/text-to-lottie` |
-| no-ai-slop | petergyang/no-ai-slop | `skills/no-ai-slop` |
-| unlazy | Leonxlnx/unlazy | repository root |
-| cross-layer-drift-sweep | MiniMax-AI/minimax-code | `.agents/skills/cross-layer-drift-sweep` |
-| verify-all-runtime-sinks | MiniMax-AI/minimax-code | `.agents/skills/verify-all-runtime-sinks` |
-| database-lookup | K-Dense-AI/scientific-agent-skills | `skills/database-lookup` |
-| scientific-critical-thinking | K-Dense-AI/scientific-agent-skills | `skills/scientific-critical-thinking` |
-| figma-generate-project-plan | figma/mcp-server-guide | `workflow-skills/generate-project-plan` |
-| figma-video-interaction-mapper | figma/mcp-server-guide | `workflow-skills/video-interaction-mapper` |
-| design-qa | openai/plugins | `plugins/product-design/skills/design-qa` |
-| visual-verdict | vibeeval/vibecosystem | `skills/visual-verdict` |
+Each plugin is one skill from one upstream repository. Adding the marketplace installs nothing: each plugin is installed, turned off, held or removed on its own.
 
-Nothing is copied into this repository. Each entry points at the upstream folder, pinned to the last upstream commit that touched it. A scheduled workflow (`.github/workflows/move-pins.yml`) moves the pins forward every day and records each move in `CHANGELOG.md`, so a subscriber receives upstream changes and the history shows exactly what changed and when.
+| Plugin | Author | Upstream repository | Skill folder |
+|---|---|---|---|
+| no-ai-slop | Peter Yang | petergyang/no-ai-slop | `skills/no-ai-slop` |
+| unlazy | Leon Lin | Leonxlnx/unlazy | repository root |
+| design-qa | OpenAI | openai/plugins | `plugins/product-design/skills/design-qa` |
+| visual-verdict | vibeeval | vibeeval/vibecosystem | `skills/visual-verdict` |
+| cross-layer-drift-sweep | MiniMax | MiniMax-AI/minimax-code | `.agents/skills/cross-layer-drift-sweep` |
+| verify-all-runtime-sinks | MiniMax | MiniMax-AI/minimax-code | `.agents/skills/verify-all-runtime-sinks` |
+| database-lookup | K-Dense | K-Dense-AI/scientific-agent-skills | `skills/database-lookup` |
+| scientific-critical-thinking | K-Dense | K-Dense-AI/scientific-agent-skills | `skills/scientific-critical-thinking` |
+| figma-generate-project-plan | Figma | figma/mcp-server-guide | `workflow-skills/generate-project-plan` |
+| figma-video-interaction-mapper | Figma | figma/mcp-server-guide | `workflow-skills/video-interaction-mapper` |
+| text-to-lottie | Diffusion Studio | diffusionstudio/lottie | `skills/text-to-lottie` |
+
+Nothing is copied into this repository. Each entry points at its upstream folder with a `git-subdir` source and names the one skill it loads in `skills`, the form Anthropic's own marketplaces use for skill-only repositories (`learn-with-coursera` in `anthropics/knowledge-work-plugins`). Sibling skills in the same folder are not loaded.
+
+## How updates reach you
+
+1. **Upstream to this repository.** `.github/workflows/move-pins.yml` runs daily. For each plugin it finds the newest upstream commit that changed that skill's folder, checks the plugin at that commit, and moves the pin only if the check passes. Each move is a commit here and a line in `CHANGELOG.md`.
+2. **This repository to Claude.** A push here reaches claude.ai and Cowork at once when **Sync automatically** is on for the marketplace (a webhook on this repository), and otherwise when Claude next syncs or you select **Check for updates**. Updates install on your account with nothing to accept, and reach Claude Code as synced plugins.
+3. **Claude Code on the Mac.** `scripts/update_local.sh` runs `claude plugin marketplace update` and `claude plugin update` daily.
+
+## What the job checks before a pin moves
+
+- **Forward only.** A pin moves to a newer commit that changed the skill, never back.
+- **Skills only.** The plugin folder must hold the named `SKILL.md` with a name and description, and nothing that would arrive as something other than instructions: no `hooks/hooks.json`, `.mcp.json`, `agents/*.md`, `commands/*.md`, top-level `bin/` (which claude.ai refuses to install), `.lsp.json`, `settings.json` or its own `.claude-plugin/plugin.json`. An upstream that adds any of these stays on its last safe pin.
+- **Within limits.** At most 5,000 files per plugin, the claude.ai and Cowork limit.
+- **Author channel.** When an upstream repository starts publishing its own Claude marketplace, the run says so: install from the author and remove the entry here.
+- **One at a time.** A problem with one plugin never stops the others from moving. Any problem fails the run, and GitHub notifies the workflow's creator; the run summary names each plugin and why.
+- **Kept alive.** GitHub turns off scheduled workflows in a public repository after 60 days without activity, so after 45 quiet days the job pushes an empty commit.
+- **Checked on push.** A hand edit to the marketplace, `holds.json` or the job is checked as soon as it lands.
+
+`python3 scripts/bump_pins.py --check` runs the same checks locally without changing anything.
+
+## Choosing and customizing
+
+- **Pick per plugin.** Install only the plugins you want; turn each off or remove it on its own in Customize > Plugins. Turning one off leaves the rest untouched.
+- **Hold a version.** Add the plugin's name to `holds.json` (`{"no-ai-slop": "why"}`) and its pin stops moving while it is still checked. Remove the line to resume.
+- **Change a skill's behavior.** Prefer layering: your own skills and preferences load beside a third-party skill and take precedence, so the upstream copy stays clean and keeps updating. When a change has to live inside the skill, fork the upstream repository and point that one entry's `url` at the fork; the job then follows the fork, and the other entries are unaffected.
 
 ## Subscribing
 
 - Claude Code: `claude plugin marketplace add yihanz/yz-personal`, then `claude plugin install <name>@yz-personal`. Turn on auto-update for the marketplace (`/plugin` > Marketplaces), or let `scripts/bootstrap.py` set it.
-- claude.ai and Cowork: Customize > Plugins > Add marketplace > `yihanz/yz-personal`, then turn on Sync automatically.
+- claude.ai and Cowork: Customize > Plugins > Add > Add marketplace > `yihanz/yz-personal`, turn on Sync automatically, then install the plugins you want one by one.
 - Codex loads plugin skills only from a `skills/` folder, which these upstream folders lack, so Codex gets the same skills through `npx skills` instead (see `stack.json`).
 
 ## Setting up a machine

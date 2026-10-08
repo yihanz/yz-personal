@@ -16,14 +16,17 @@
       "author": {
         "name": "Diffusion Studio"
       },
-      "strict": false,
       "source": {
         "source": "git-subdir",
         "url": "https://github.com/diffusionstudio/lottie.git",
-        "path": "skills/text-to-lottie",
+        "path": "skills",
         "ref": "main",
         "sha": "f7d4f9f56ae6e21399dbfc014773fa2d0dce6ee2"
-      }
+      },
+      "strict": false,
+      "skills": [
+        "./text-to-lottie"
+      ]
     },
     {
       "name": "no-ai-slop",
@@ -33,14 +36,17 @@
       "author": {
         "name": "Peter Yang"
       },
-      "strict": false,
       "source": {
         "source": "git-subdir",
         "url": "https://github.com/petergyang/no-ai-slop.git",
-        "path": "skills/no-ai-slop",
+        "path": "skills",
         "ref": "main",
         "sha": "000650b156983f5159695b441477f4e63b25dc85"
-      }
+      },
+      "strict": false,
+      "skills": [
+        "./no-ai-slop"
+      ]
     },
     {
       "name": "unlazy",
@@ -50,13 +56,16 @@
       "author": {
         "name": "Leon Lin"
       },
-      "strict": false,
       "source": {
         "source": "url",
         "url": "https://github.com/Leonxlnx/unlazy.git",
         "ref": "main",
         "sha": "16671491f6679ad9378f52604d3bc2415b4120c7"
-      }
+      },
+      "strict": false,
+      "skills": [
+        "./"
+      ]
     },
     {
       "name": "cross-layer-drift-sweep",
@@ -66,14 +75,17 @@
       "author": {
         "name": "MiniMax"
       },
-      "strict": false,
       "source": {
         "source": "git-subdir",
         "url": "https://github.com/MiniMax-AI/minimax-code.git",
-        "path": ".agents/skills/cross-layer-drift-sweep",
+        "path": ".agents/skills",
         "ref": "main",
         "sha": "ac848adf9cafbc5413b2b9ed8b807f86027170f9"
-      }
+      },
+      "strict": false,
+      "skills": [
+        "./cross-layer-drift-sweep"
+      ]
     },
     {
       "name": "verify-all-runtime-sinks",
@@ -83,14 +95,17 @@
       "author": {
         "name": "MiniMax"
       },
-      "strict": false,
       "source": {
         "source": "git-subdir",
         "url": "https://github.com/MiniMax-AI/minimax-code.git",
-        "path": ".agents/skills/verify-all-runtime-sinks",
+        "path": ".agents/skills",
         "ref": "main",
         "sha": "ac848adf9cafbc5413b2b9ed8b807f86027170f9"
-      }
+      },
+      "strict": false,
+      "skills": [
+        "./verify-all-runtime-sinks"
+      ]
     },
     {
       "name": "database-lookup",
@@ -100,14 +115,17 @@
       "author": {
         "name": "K-Dense Inc."
       },
-      "strict": false,
       "source": {
         "source": "git-subdir",
         "url": "https://github.com/K-Dense-AI/scientific-agent-skills.git",
-        "path": "skills/database-lookup",
+        "path": "skills",
         "ref": "main",
         "sha": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c"
-      }
+      },
+      "strict": false,
+      "skills": [
+        "./database-lookup"
+      ]
     },
     {
       "name": "scientific-critical-thinking",
@@ -117,14 +135,17 @@
       "author": {
         "name": "K-Dense Inc."
       },
-      "strict": false,
       "source": {
         "source": "git-subdir",
         "url": "https://github.com/K-Dense-AI/scientific-agent-skills.git",
-        "path": "skills/scientific-critical-thinking",
+        "path": "skills",
         "ref": "main",
         "sha": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c"
-      }
+      },
+      "strict": false,
+      "skills": [
+        "./scientific-critical-thinking"
+      ]
     },
     {
       "name": "figma-generate-project-plan",
@@ -134,14 +155,17 @@
       "author": {
         "name": "Figma"
       },
-      "strict": false,
       "source": {
         "source": "git-subdir",
         "url": "https://github.com/figma/mcp-server-guide.git",
-        "path": "workflow-skills/generate-project-plan",
+        "path": "workflow-skills",
         "ref": "main",
         "sha": "3590366424deba5651026319b71b291d10004f1b"
-      }
+      },
+      "strict": false,
+      "skills": [
+        "./generate-project-plan"
+      ]
     },
     {
       "name": "figma-video-interaction-mapper",
@@ -151,14 +175,17 @@
       "author": {
         "name": "Figma"
       },
-      "strict": false,
       "source": {
         "source": "git-subdir",
         "url": "https://github.com/figma/mcp-server-guide.git",
-        "path": "workflow-skills/video-interaction-mapper",
+        "path": "workflow-skills",
         "ref": "main",
         "sha": "a72c41ef5cd8ea88c96dd4b2e73311463b1cf6bc"
-      }
+      },
+      "strict": false,
+      "skills": [
+        "./video-interaction-mapper"
+      ]
     },
     {
       "name": "design-qa",
@@ -168,14 +195,17 @@
       "author": {
         "name": "OpenAI"
       },
-      "strict": false,
       "source": {
         "source": "git-subdir",
         "url": "https://github.com/openai/plugins.git",
-        "path": "plugins/product-design/skills/design-qa",
+        "path": "plugins/product-design/skills",
         "ref": "main",
         "sha": "33bd9529725fcee78c9e51fcbaa93cd963c3a47b"
-      }
+      },
+      "strict": false,
+      "skills": [
+        "./design-qa"
+      ]
     },
     {
       "name": "visual-verdict",
@@ -185,14 +215,17 @@
       "author": {
         "name": "vibeeval"
       },
-      "strict": false,
       "source": {
         "source": "git-subdir",
         "url": "https://github.com/vibeeval/vibecosystem.git",
-        "path": "skills/visual-verdict",
+        "path": "skills",
         "ref": "main",
         "sha": "603ff34cf11c97835b7b71965feb8a73743a00d3"
-      }
+      },
+      "strict": false,
+      "skills": [
+        "./visual-verdict"
+      ]
     }
   ]
 }

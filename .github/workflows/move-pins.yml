@@ -4,6 +4,13 @@ on:
   schedule:
     - cron: "17 9 * * *"
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".claude-plugin/**"
+      - "holds.json"
+      - "scripts/bump_pins.py"
+      - ".github/workflows/move-pins.yml"
 
 permissions:
   contents: write
@@ -15,22 +22,52 @@ concurrency:
 jobs:
   move-pins:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
-      - name: Validate marketplace file
-        run: python3 -c "import json; d=json.load(open('.claude-plugin/marketplace.json')); assert d['name']=='yz-personal' and d['plugins']"
-      - name: Move pins to the newest upstream commits
-        id: move
-        run: |
-          msg="$(python3 scripts/bump_pins.py)"
-          echo "msg=$msg" >> "$GITHUB_OUTPUT"
-      - name: Commit when anything moved
-        if: steps.move.outputs.msg != ''
-        env:
-          MSG: ${{ steps.move.outputs.msg }}
+
+      - name: Identify the job's commits
         run: |
           git config user.name "yz-personal pin job"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      # A change pushed by hand is checked before anything installs it.
+      - name: Check every pin
+        if: github.event_name == 'push'
+        run: python3 scripts/bump_pins.py --check
+
+      # Each plugin moves on its own; one that fails a check stays on its pin and fails the run.
+      - name: Move pins to the newest safe upstream commits
+        if: github.event_name != 'push'
+        id: move
+        run: |
+          set +e
+          python3 scripts/bump_pins.py > "$RUNNER_TEMP/msg.txt"
+          echo "status=$?" >> "$GITHUB_OUTPUT"
+          echo "msg=$(cat "$RUNNER_TEMP/msg.txt")" >> "$GITHUB_OUTPUT"
+
+      - name: Commit moved pins
+        if: github.event_name != 'push' && steps.move.outputs.msg != ''
+        env:
+          MSG: ${{ steps.move.outputs.msg }}
+        run: |
           git add .claude-plugin/marketplace.json CHANGELOG.md
           git commit -m "$MSG"
           git push
+
+      # GitHub turns off scheduled workflows in a public repository after 60 days without
+      # repository activity. A quiet stretch upstream would otherwise stop this job silently.
+      - name: Keep the schedule alive
+        if: github.event_name != 'push'
+        run: |
+          last=$(git log -1 --format=%ct)
+          if [ $(( $(date +%s) - last )) -gt $(( 45 * 86400 )) ]; then
+            git commit --allow-empty -m "Keep the scheduled pin job active"
+            git push
+          fi
+
+      - name: Fail when a plugin needs attention
+        if: github.event_name != 'push' && steps.move.outputs.status != '0'
+        run: |
+          echo "One or more plugins need attention; the run summary lists each one and why."
+          exit 1
