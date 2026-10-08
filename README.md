@@ -20,7 +20,7 @@ Each plugin is one skill from one upstream repository. Adding the marketplace in
 | figma-video-interaction-mapper | Figma | figma/mcp-server-guide | `workflow-skills/video-interaction-mapper` |
 | text-to-lottie | Diffusion Studio | diffusionstudio/lottie | `skills/text-to-lottie` |
 
-Nothing is copied into this repository. Each entry points at its upstream source and names the one skill it loads in `skills`. Ten use a `git-subdir` source at the folder that holds the skill, the form Anthropic's own marketplaces use for skill-only repositories (`learn-with-coursera` in `anthropics/knowledge-work-plugins`); sibling skills in that folder are not loaded. unlazy's skill is its repository root, so its entry is a `url` source with `skills: ["./"]`.
+Nothing is copied into this repository. Each entry points at exactly one upstream skill folder and declares it with `skills: ["./"]`: ten are `git-subdir` sources at the skill's own folder, and unlazy, whose skill is its repository root, is a `url` source. Only that folder is fetched, so nothing else from the upstream repository is packaged or loaded. On 8 Oct 2026 claude.ai listed all eleven as one skill each, and Claude Code loads each as one skill with no agents, hooks or connectors.
 
 ## How updates reach you
 
@@ -32,6 +32,7 @@ Nothing is copied into this repository. Each entry points at its upstream source
 
 - **Forward only.** A pin moves only to a commit that descends from the current pin and changed the skill. If upstream history is rewritten (a force-push), the plugin stays on its pin and the run says so.
 - **Skills only.** The plugin folder must hold the named `SKILL.md` with a name and description, and none of the default locations from which Claude loads anything else: `hooks/hooks.json`, `.mcp.json`, `.lsp.json`, `settings.json`, `monitors/monitors.json`, its own `.claude-plugin/plugin.json`, Markdown files anywhere under `agents/` or `commands/`, or anything under `bin/` (which claude.ai refuses to install), `output-styles/`, `workflows/`, `themes/` or a nested `skills/`. Names are compared without regard to case, and symbolic links and submodules are refused. An upstream that adds any of these stays on its last safe pin. A skill's own text can still ask Claude to do things, such as unlazy offering to install a Claude Code hook with your consent; the check covers what installs, not what a skill suggests.
+- **Same permissions.** A skill's `allowed-tools` line lets it use those tools without asking. If an update changes that line, the pin stays where it is until you review it and move it by hand.
 - **Within limits.** At most 5,000 files per plugin, the claude.ai and Cowork limit.
 - **Author channel.** When an upstream repository starts publishing its own Claude marketplace, the run says so: install from the author and remove the entry here.
 - **One at a time.** A problem with one plugin never stops the others from moving. Any problem fails the run, and GitHub notifies the workflow's creator; the run summary names each plugin and why.

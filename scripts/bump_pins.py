@@ -8,6 +8,7 @@ For each plugin entry:
   2. Move only forward: that commit must descend from the current pin. Rewritten upstream
      history (a force-push) stays on the current pin and is reported.
   3. Check the plugin at that commit (see check()). Only a commit that passes moves the pin.
+     A change to the tools a skill pre-approves (`allowed-tools`) also holds the pin for review.
   4. Notice when the upstream repository starts publishing its own Claude marketplace,
      which is the signal to install from the author and retire the entry here.
 
@@ -121,6 +122,23 @@ def skill_dirs(plugin):
 def watch_paths(plugin, src):
     root = src.get("path", "") if src["source"] == "git-subdir" else ""
     return [norm(root, s) or "." for s in skill_dirs(plugin)]
+
+
+def allowed_tools(repos, d, plugin, src, sha):
+    """The `allowed-tools` each named skill pre-approves at `sha`, as {skill folder: normalized value}."""
+    root = norm(src.get("path", "")) if src["source"] == "git-subdir" else ""
+    found = {}
+    for s in skill_dirs(plugin):
+        try:
+            text = git("show", f"{sha}:{norm(root, s, 'SKILL.md')}", cwd=d)
+        except RuntimeError:
+            continue
+        m = re.match(r"^---\r?\n(.*?)\r?\n---", text, re.S)
+        block = m.group(1) if m else ""
+        value = re.search(r"^allowed-tools:[ \t]*(.*(?:\n[ \t]+-.*)*)", block, re.M)
+        tools = re.findall(r"[A-Za-z0-9_][A-Za-z0-9_.:*()\[\]-]*", value.group(1)) if value else []
+        found[s or "."] = " ".join(sorted(set(tools)))
+    return found
 
 
 def frontmatter_keys(text):
@@ -247,6 +265,11 @@ def run(data, holds, repos, moves, problems, check_only):
                                        f"{current[:7]}); staying on {current[:7]} until checked by hand"))
                 continue
             found = check(repos, d, plugin, src, sha)
+            before, after = allowed_tools(repos, d, plugin, src, current), allowed_tools(repos, d, plugin, src, sha)
+            if before != after:
+                shown = lambda v: "; ".join(x or "none" for x in v.values()) or "none"
+                found.append(f"the tools it pre-approves changed from {shown(before)} to {shown(after)}; "
+                             "review, then move the pin by hand")
             if found:
                 problems.append((name, f"upstream {sha[:7]} ({date}) not taken, staying on {current[:7]}: "
                                        + "; ".join(found)))

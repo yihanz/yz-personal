@@ -19,13 +19,13 @@
       "source": {
         "source": "git-subdir",
         "url": "https://github.com/diffusionstudio/lottie.git",
-        "path": "skills",
+        "path": "skills/text-to-lottie",
         "ref": "main",
         "sha": "f7d4f9f56ae6e21399dbfc014773fa2d0dce6ee2"
       },
       "strict": false,
       "skills": [
-        "./text-to-lottie"
+        "./"
       ]
     },
     {
@@ -39,13 +39,13 @@
       "source": {
         "source": "git-subdir",
         "url": "https://github.com/petergyang/no-ai-slop.git",
-        "path": "skills",
+        "path": "skills/no-ai-slop",
         "ref": "main",
         "sha": "000650b156983f5159695b441477f4e63b25dc85"
       },
       "strict": false,
       "skills": [
-        "./no-ai-slop"
+        "./"
       ]
     },
     {
@@ -78,13 +78,13 @@
       "source": {
         "source": "git-subdir",
         "url": "https://github.com/MiniMax-AI/minimax-code.git",
-        "path": ".agents/skills",
+        "path": ".agents/skills/cross-layer-drift-sweep",
         "ref": "main",
         "sha": "ac848adf9cafbc5413b2b9ed8b807f86027170f9"
       },
       "strict": false,
       "skills": [
-        "./cross-layer-drift-sweep"
+        "./"
       ]
     },
     {
@@ -98,13 +98,13 @@
       "source": {
         "source": "git-subdir",
         "url": "https://github.com/MiniMax-AI/minimax-code.git",
-        "path": ".agents/skills",
+        "path": ".agents/skills/verify-all-runtime-sinks",
         "ref": "main",
         "sha": "ac848adf9cafbc5413b2b9ed8b807f86027170f9"
       },
       "strict": false,
       "skills": [
-        "./verify-all-runtime-sinks"
+        "./"
       ]
     },
     {
@@ -118,13 +118,13 @@
       "source": {
         "source": "git-subdir",
         "url": "https://github.com/K-Dense-AI/scientific-agent-skills.git",
-        "path": "skills",
+        "path": "skills/database-lookup",
         "ref": "main",
         "sha": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c"
       },
       "strict": false,
       "skills": [
-        "./database-lookup"
+        "./"
       ]
     },
     {
@@ -138,13 +138,13 @@
       "source": {
         "source": "git-subdir",
         "url": "https://github.com/K-Dense-AI/scientific-agent-skills.git",
-        "path": "skills",
+        "path": "skills/scientific-critical-thinking",
         "ref": "main",
         "sha": "a92663a0214b3b9fa1ba6b958284ffd919c00a0c"
       },
       "strict": false,
       "skills": [
-        "./scientific-critical-thinking"
+        "./"
       ]
     },
     {
@@ -158,13 +158,13 @@
       "source": {
         "source": "git-subdir",
         "url": "https://github.com/figma/mcp-server-guide.git",
-        "path": "workflow-skills",
+        "path": "workflow-skills/generate-project-plan",
         "ref": "main",
         "sha": "3590366424deba5651026319b71b291d10004f1b"
       },
       "strict": false,
       "skills": [
-        "./generate-project-plan"
+        "./"
       ]
     },
     {
@@ -178,13 +178,13 @@
       "source": {
         "source": "git-subdir",
         "url": "https://github.com/figma/mcp-server-guide.git",
-        "path": "workflow-skills",
+        "path": "workflow-skills/video-interaction-mapper",
         "ref": "main",
         "sha": "a72c41ef5cd8ea88c96dd4b2e73311463b1cf6bc"
       },
       "strict": false,
       "skills": [
-        "./video-interaction-mapper"
+        "./"
       ]
     },
     {
@@ -198,13 +198,13 @@
       "source": {
         "source": "git-subdir",
         "url": "https://github.com/openai/plugins.git",
-        "path": "plugins/product-design/skills",
+        "path": "plugins/product-design/skills/design-qa",
         "ref": "main",
         "sha": "33bd9529725fcee78c9e51fcbaa93cd963c3a47b"
       },
       "strict": false,
       "skills": [
-        "./design-qa"
+        "./"
       ]
     },
     {
@@ -218,13 +218,13 @@
       "source": {
         "source": "git-subdir",
         "url": "https://github.com/vibeeval/vibecosystem.git",
-        "path": "skills",
+        "path": "skills/visual-verdict",
         "ref": "main",
         "sha": "603ff34cf11c97835b7b71965feb8a73743a00d3"
       },
       "strict": false,
       "skills": [
-        "./visual-verdict"
+        "./"
       ]
     }
   ]
