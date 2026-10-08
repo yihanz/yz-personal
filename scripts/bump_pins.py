@@ -275,6 +275,9 @@ def write(data, moves):
         else:
             CHANGELOG.write_text(text.rstrip("\n") + "\n\n## Upstream pin moves\n\n" + lines)
         print("Move upstream pins: " + ", ".join(m.split(" (")[0] for m in moves))
+        moves_file = os.environ.get("MOVES_FILE")
+        if moves_file:  # the workflow passes these on to the issue that asks for Check for updates
+            pathlib.Path(moves_file).write_text(lines)
 
 
 if __name__ == "__main__":

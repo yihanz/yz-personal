@@ -4,11 +4,11 @@ A plugin marketplace that carries agent skills whose authors offer no Claude rou
 
 ## Which route a third-party plugin takes
 
-Each plugin comes through the most official route that keeps it current without anyone clicking **Check for updates**:
+Each plugin comes through the most official route that keeps it current, preferring one that needs nobody to click **Check for updates**:
 
 1. **Anthropic's directory**, when the author lists the plugin there (humanizer, Matt Pocock's skills). Anthropic reviews every version and claude.ai updates it on its own.
-2. **The author's own marketplace**, when claude.ai can sync it automatically. **Sync automatically** works only for a repository the Claude GitHub App is installed on. Installing the app on an account covers that account's repositories, so another person's repository qualifies only if its owner has installed the app there (impeccable and taste-skill qualify).
-3. **This marketplace**, for everything else: skills with no marketplace, and marketplaces claude.ai cannot sync automatically (marketing-os). It is my repository, so it syncs automatically, and the job below carries each upstream change to it.
+2. **The author's own marketplace**, when it demonstrably updates on its own in claude.ai. impeccable and taste-skill do: on 8 Oct 2026 impeccable took an upstream push about 15 minutes after it landed, and has taken 26 versions since 27 Sep. claude.ai refuses **Sync automatically** for a repository the Claude GitHub App cannot reach, and only the repository's owner can install the app there (humanizer's is refused).
+3. **This marketplace**, for everything else: skills with no marketplace, and author marketplaces that do not update on their own (marketing-os). Claude Code keeps it current on its own. claude.ai does not yet act on pushes to an account marketplace even with Sync automatically on and the app installed ([anthropics/claude-code#93825](https://github.com/anthropics/claude-code/issues/93825); a push here on 8 Oct 2026 had not arrived 35 minutes later), so when pins move the job asks for **Check for updates** on a standing issue, and one click pulls every plugin here.
 
 ## What it carries
 
@@ -34,7 +34,7 @@ Nothing is copied into this repository. Each entry points at exactly one upstrea
 ## How updates reach you
 
 1. **Upstream to this repository.** `.github/workflows/move-pins.yml` runs daily. For each plugin it finds the newest upstream commit that changed that skill's folder, checks the plugin at that commit, and moves the pin only if the check passes. Each move is a commit here and a line in `CHANGELOG.md`.
-2. **This repository to Claude.** With **Sync automatically** on for this marketplace, a push here reaches claude.ai and Cowork within minutes, through the Claude GitHub App installed on my account. Without it, nothing arrives until you select **Check for updates**. Updates install on your account with nothing to accept, and reach Claude Code as synced plugins.
+2. **This repository to claude.ai and Cowork.** A push here arrives when you select **Check for updates** on the marketplace (Customize > Plugins > Add > Manage marketplaces). When the job moves pins, it comments on one standing issue, "Upstream changes waiting for Check for updates on claude.ai", assigned to the repository owner, so the notification comes exactly when there is something to pull. **Sync automatically** is on and will make the click unnecessary once claude.ai acts on pushes to account marketplaces ([anthropics/claude-code#93825](https://github.com/anthropics/claude-code/issues/93825)); then `scripts/ask_for_update.sh` and its workflow step can go. Updates install on your account with nothing to accept, and reach Claude Code as synced plugins.
 3. **Claude Code on the Mac.** `scripts/update_local.sh` runs `claude plugin marketplace update` and `claude plugin update` daily.
 
 ## What the job checks before a pin moves
