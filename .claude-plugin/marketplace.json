@@ -142,6 +142,40 @@
         "ref": "main",
         "sha": "a72c41ef5cd8ea88c96dd4b2e73311463b1cf6bc"
       }
+    },
+    {
+      "name": "design-qa",
+      "description": "Compare a source design (Figma node, mockup, screenshot) against the rendered build side by side, iterate until no P0-P2 differences remain, and record the result in design-qa.md. OpenAI's Product Design helper; invoke it by name.",
+      "category": "design",
+      "homepage": "https://github.com/openai/plugins/tree/main/plugins/product-design/skills/design-qa",
+      "author": {
+        "name": "OpenAI"
+      },
+      "strict": false,
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/openai/plugins.git",
+        "path": "plugins/product-design/skills/design-qa",
+        "ref": "main",
+        "sha": "33bd9529725fcee78c9e51fcbaa93cd963c3a47b"
+      }
+    },
+    {
+      "name": "visual-verdict",
+      "description": "Screenshot QA for frontend work: scores an implementation against a design reference on layout, typography, color, responsiveness, states and content, and returns PASS, REVISE or FAIL with concrete fixes.",
+      "category": "design",
+      "homepage": "https://github.com/vibeeval/vibecosystem/tree/main/skills/visual-verdict",
+      "author": {
+        "name": "vibeeval"
+      },
+      "strict": false,
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/vibeeval/vibecosystem.git",
+        "path": "skills/visual-verdict",
+        "ref": "main",
+        "sha": "603ff34cf11c97835b7b71965feb8a73743a00d3"
+      }
     }
   ]
 }

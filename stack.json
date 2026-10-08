@@ -66,6 +66,9 @@
       "yihanz/yz-personal",
       "heygen-com/hyperframes"
     ],
+    "plugins": {
+      "yz-personal": ["no-ai-slop", "unlazy", "design-qa", "visual-verdict", "cross-layer-drift-sweep", "database-lookup", "scientific-critical-thinking", "figma-generate-project-plan", "figma-video-interaction-mapper", "text-to-lottie"]
+    },
     "note": "Customize > Plugins > Add marketplace, then turn on Sync automatically for each. Anthropic directory and knowledge-work plugins are installed from the directory and update on their own."
   },
   "brew": ["agent-browser", "yt-dlp", "ffmpeg"]

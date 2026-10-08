@@ -14,6 +14,8 @@ A plugin marketplace that carries agent skills whose authors publish no marketpl
 | scientific-critical-thinking | K-Dense-AI/scientific-agent-skills | `skills/scientific-critical-thinking` |
 | figma-generate-project-plan | figma/mcp-server-guide | `workflow-skills/generate-project-plan` |
 | figma-video-interaction-mapper | figma/mcp-server-guide | `workflow-skills/video-interaction-mapper` |
+| design-qa | openai/plugins | `plugins/product-design/skills/design-qa` |
+| visual-verdict | vibeeval/vibecosystem | `skills/visual-verdict` |
 
 Nothing is copied into this repository. Each entry points at the upstream folder, pinned to the last upstream commit that touched it. A scheduled workflow (`.github/workflows/move-pins.yml`) moves the pins forward every day and records each move in `CHANGELOG.md`, so a subscriber receives upstream changes and the history shows exactly what changed and when.
 
