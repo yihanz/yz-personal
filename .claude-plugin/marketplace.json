@@ -5,7 +5,7 @@
     "name": "Yihan Zhao"
   },
   "metadata": {
-    "description": "Single-skill plugins for upstream skills that ship no Claude marketplace of their own. Every entry points at its upstream repository, pinned to the last upstream commit that changed the skill; a daily job checks each plugin and moves its pin forward, so claude.ai, Cowork and Claude Code receive upstream changes and the git history records each one."
+    "description": "Single-skill plugins for upstream skills that have no Claude route that updates on its own: either no marketplace, or one in a repository claude.ai cannot sync automatically. Every entry points at its upstream repository, pinned to the last upstream commit that changed the skill; a daily job checks each plugin and moves its pin forward, so claude.ai, Cowork and Claude Code receive upstream changes and the git history records each one."
   },
   "plugins": [
     {
@@ -42,6 +42,26 @@
         "path": "skills/no-ai-slop",
         "ref": "main",
         "sha": "000650b156983f5159695b441477f4e63b25dc85"
+      },
+      "strict": false,
+      "skills": [
+        "./"
+      ]
+    },
+    {
+      "name": "marketing-os",
+      "description": "An entire marketing department as one Claude skill: scored site and landing-page audits, a hook engine, graded copy, ad diagnosis, GEO, email, launches, positioning and pricing.",
+      "category": "marketing",
+      "homepage": "https://github.com/Yuzzyuk/marketing-os",
+      "author": {
+        "name": "Yuzzy Itaba"
+      },
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/Yuzzyuk/marketing-os.git",
+        "path": "skills/marketing-os",
+        "ref": "main",
+        "sha": "bb67dff5f04b390e861ee11433166e4519e7f4c0"
       },
       "strict": false,
       "skills": [

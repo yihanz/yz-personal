@@ -109,3 +109,6 @@ if __name__ == "__main__":
     print("\nclaude.ai / Cowork (web app, Customize > Plugins > Add marketplace, then Sync automatically):")
     for repo in STACK["claude_ai"]["github_marketplaces"]:
         print("  -", repo)
+    print("claude.ai / Cowork (Customize > Plugins > Discover, Anthropic's directory):")
+    for name in STACK["claude_ai"].get("directory", []):
+        print("  -", name)

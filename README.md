@@ -1,6 +1,14 @@
 # yz-personal
 
-A plugin marketplace that carries agent skills whose authors publish no marketplace of their own, plus the install manifest and scripts that set up the rest of my agent tooling on a new machine.
+A plugin marketplace that carries agent skills whose authors offer no Claude route that updates on its own, plus the install manifest and scripts that set up the rest of my agent tooling on a new machine.
+
+## Which route a third-party plugin takes
+
+Each plugin comes through the most official route that keeps it current without anyone clicking **Check for updates**:
+
+1. **Anthropic's directory**, when the author lists the plugin there (humanizer, Matt Pocock's skills). Anthropic reviews every version and claude.ai updates it on its own.
+2. **The author's own marketplace**, when claude.ai can sync it automatically. **Sync automatically** works only for a repository the Claude GitHub App is installed on. Installing the app on an account covers that account's repositories, so another person's repository qualifies only if its owner has installed the app there (impeccable and taste-skill qualify).
+3. **This marketplace**, for everything else: skills with no marketplace, and marketplaces claude.ai cannot sync automatically (marketing-os). It is my repository, so it syncs automatically, and the job below carries each upstream change to it.
 
 ## What it carries
 
@@ -9,6 +17,7 @@ Each plugin is one skill from one upstream repository. Adding the marketplace in
 | Plugin | Author | Upstream repository | Skill folder |
 |---|---|---|---|
 | no-ai-slop | Peter Yang | petergyang/no-ai-slop | `skills/no-ai-slop` |
+| marketing-os | Yuzzy Itaba | Yuzzyuk/marketing-os | `skills/marketing-os` |
 | unlazy | Leon Lin | Leonxlnx/unlazy | repository root |
 | design-qa | OpenAI | openai/plugins | `plugins/product-design/skills/design-qa` |
 | visual-verdict | vibeeval | vibeeval/vibecosystem | `skills/visual-verdict` |
@@ -20,12 +29,12 @@ Each plugin is one skill from one upstream repository. Adding the marketplace in
 | figma-video-interaction-mapper | Figma | figma/mcp-server-guide | `workflow-skills/video-interaction-mapper` |
 | text-to-lottie | Diffusion Studio | diffusionstudio/lottie | `skills/text-to-lottie` |
 
-Nothing is copied into this repository. Each entry points at exactly one upstream skill folder and declares it with `skills: ["./"]`: ten are `git-subdir` sources at the skill's own folder, and unlazy, whose skill is its repository root, is a `url` source. Only that folder is fetched, so nothing else from the upstream repository is packaged or loaded. On 8 Oct 2026 claude.ai listed all eleven as one skill each, and Claude Code loads each as one skill with no agents, hooks or connectors.
+Nothing is copied into this repository. Each entry points at exactly one upstream skill folder and declares it with `skills: ["./"]`: eleven are `git-subdir` sources at the skill's own folder, and unlazy, whose skill is its repository root, is a `url` source. Only that folder is fetched, so nothing else from the upstream repository is packaged or loaded. claude.ai lists each as one skill, and Claude Code loads each as one skill with no agents, hooks or connectors.
 
 ## How updates reach you
 
 1. **Upstream to this repository.** `.github/workflows/move-pins.yml` runs daily. For each plugin it finds the newest upstream commit that changed that skill's folder, checks the plugin at that commit, and moves the pin only if the check passes. Each move is a commit here and a line in `CHANGELOG.md`.
-2. **This repository to Claude.** A push here reaches claude.ai and Cowork at once when **Sync automatically** is on for the marketplace (a webhook on this repository), and otherwise when Claude next syncs or you select **Check for updates**. Updates install on your account with nothing to accept, and reach Claude Code as synced plugins.
+2. **This repository to Claude.** With **Sync automatically** on for this marketplace, a push here reaches claude.ai and Cowork within minutes, through the Claude GitHub App installed on my account. Without it, nothing arrives until you select **Check for updates**. Updates install on your account with nothing to accept, and reach Claude Code as synced plugins.
 3. **Claude Code on the Mac.** `scripts/update_local.sh` runs `claude plugin marketplace update` and `claude plugin update` daily.
 
 ## What the job checks before a pin moves
@@ -34,7 +43,6 @@ Nothing is copied into this repository. Each entry points at exactly one upstrea
 - **Skills only.** The plugin folder must hold the named `SKILL.md` with a name and description, and none of the default locations from which Claude loads anything else: `hooks/hooks.json`, `.mcp.json`, `.lsp.json`, `settings.json`, `monitors/monitors.json`, its own `.claude-plugin/plugin.json`, Markdown files anywhere under `agents/` or `commands/`, or anything under `bin/` (which claude.ai refuses to install), `output-styles/`, `workflows/`, `themes/` or a nested `skills/`. Names are compared without regard to case, and symbolic links and submodules are refused. An upstream that adds any of these stays on its last safe pin. A skill's own text can still ask Claude to do things, such as unlazy offering to install a Claude Code hook with your consent; the check covers what installs, not what a skill suggests.
 - **Same permissions.** A skill's `allowed-tools` line lets it use those tools without asking. If an update changes that line, the pin stays where it is until you review it and move it by hand.
 - **Within limits.** At most 5,000 files per plugin, the claude.ai and Cowork limit.
-- **Author channel.** When an upstream repository starts publishing its own Claude marketplace, the run says so: install from the author and remove the entry here.
 - **One at a time.** A problem with one plugin never stops the others from moving. Any problem fails the run, and GitHub notifies the workflow's creator; the run summary names each plugin and why.
 - **Kept alive.** GitHub turns off scheduled workflows in a public repository after 60 days without activity, so after 45 quiet days the job pushes an empty commit.
 - **Checked on push.** A hand edit to the marketplace, `holds.json` or the job is checked as soon as it lands.

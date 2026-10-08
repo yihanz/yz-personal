@@ -61,20 +61,17 @@
     "github_marketplaces": [
       "pbakaus/impeccable",
       "Leonxlnx/taste-skill",
-      "blader/humanizer",
-      "mattpocock/skills",
-      "Yuzzyuk/marketing-os",
-      "yihanz/yz-personal",
-      "heygen-com/hyperframes"
+      "yihanz/yz-personal"
     ],
+    "directory": ["Humanizer (blader)", "Skills For Real Engineers (Matt Pocock)"],
     "plugins": {
-      "yz-personal": ["no-ai-slop", "unlazy", "design-qa", "visual-verdict", "cross-layer-drift-sweep", "verify-all-runtime-sinks"]
+      "yz-personal": ["no-ai-slop", "marketing-os", "unlazy", "design-qa", "visual-verdict", "cross-layer-drift-sweep", "verify-all-runtime-sinks"]
     },
     "optional": {
       "yz-personal": ["database-lookup", "scientific-critical-thinking", "figma-generate-project-plan", "figma-video-interaction-mapper", "text-to-lottie"],
       "heygen-com/hyperframes": ["hyperframes"]
     },
-    "note": "Customize > Plugins > Add marketplace, then turn on Sync automatically for each; adding a marketplace installs nothing, and each plugin is installed on its own. Plugins installed on the account also reach Claude Code as synced plugins, which is why claude_code.plugins lists only what the Mac installs locally. Anthropic directory and knowledge-work plugins are installed from the directory and update on their own."
+    "note": "Customize > Plugins > Add marketplace, then turn on Sync automatically for each; adding a marketplace installs nothing, and each plugin is installed on its own. Sync automatically works only for a repository the Claude GitHub App is installed on: yz-personal through Yihan's own installation, impeccable and taste-skill through their owners'. Plugins whose authors' repositories lack the app come from Anthropic's directory when listed there (directory) or through yz-personal otherwise. Plugins installed on the account also reach Claude Code as synced plugins, which is why claude_code.plugins lists only what the Mac installs locally. Anthropic directory and knowledge-work plugins are installed from the directory and update on their own."
   },
   "brew": ["agent-browser", "yt-dlp", "ffmpeg"]
 }

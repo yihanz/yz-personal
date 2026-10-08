@@ -9,8 +9,6 @@ For each plugin entry:
      history (a force-push) stays on the current pin and is reported.
   3. Check the plugin at that commit (see check()). Only a commit that passes moves the pin.
      A change to the tools a skill pre-approves (`allowed-tools`) also holds the pin for review.
-  4. Notice when the upstream repository starts publishing its own Claude marketplace,
-     which is the signal to install from the author and retire the entry here.
 
 holds.json lists plugins whose pin must not move (a deliberate freeze); they are still checked.
 
@@ -195,18 +193,6 @@ def is_ancestor(d, older, newer):
     return r.returncode == 0
 
 
-def upstream_marketplace(d, ref):
-    try:
-        git("cat-file", "-e", f"origin/{ref}:.claude-plugin/marketplace.json", cwd=d)
-        return True
-    except RuntimeError:
-        try:
-            git("cat-file", "-e", "HEAD:.claude-plugin/marketplace.json", cwd=d)
-            return True
-        except RuntimeError:
-            return False
-
-
 def report(problems):
     lines = [f"- **{name}**: {msg}" for name, msg in problems]
     for line in lines:
@@ -247,9 +233,6 @@ def run(data, holds, repos, moves, problems, check_only):
                 continue
             for msg in check(repos, d, plugin, src, current):
                 problems.append((name, f"current pin {current[:7]}: {msg}"))
-            if upstream_marketplace(d, ref):
-                problems.append((name, f"{src['url']} now publishes its own Claude marketplace: "
-                                       "install from the author and remove this entry"))
             if check_only or name in holds:
                 continue
             out = git("log", "-1", "--format=%H%x09%cs%x09%s", "HEAD", "--", *watch_paths(plugin, src), cwd=d).strip()
