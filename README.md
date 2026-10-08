@@ -10,6 +10,7 @@ A plugin marketplace that carries agent skills whose authors publish no marketpl
 | no-ai-slop | petergyang/no-ai-slop | `skills/no-ai-slop` |
 | unlazy | Leonxlnx/unlazy | repository root |
 | cross-layer-drift-sweep | MiniMax-AI/minimax-code | `.agents/skills/cross-layer-drift-sweep` |
+| verify-all-runtime-sinks | MiniMax-AI/minimax-code | `.agents/skills/verify-all-runtime-sinks` |
 | database-lookup | K-Dense-AI/scientific-agent-skills | `skills/database-lookup` |
 | scientific-critical-thinking | K-Dense-AI/scientific-agent-skills | `skills/scientific-critical-thinking` |
 | figma-generate-project-plan | figma/mcp-server-guide | `workflow-skills/generate-project-plan` |

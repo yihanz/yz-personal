@@ -76,6 +76,23 @@
       }
     },
     {
+      "name": "verify-all-runtime-sinks",
+      "description": "Before declaring a runtime change validated, trace where each changed schema, prompt, identity, adapter, cache or renamed value is finally consumed, including alternate entry points and persisted or generated values.",
+      "category": "engineering",
+      "homepage": "https://github.com/MiniMax-AI/minimax-code/tree/main/.agents/skills/verify-all-runtime-sinks",
+      "author": {
+        "name": "MiniMax"
+      },
+      "strict": false,
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/MiniMax-AI/minimax-code.git",
+        "path": ".agents/skills/verify-all-runtime-sinks",
+        "ref": "main",
+        "sha": "ac848adf9cafbc5413b2b9ed8b807f86027170f9"
+      }
+    },
+    {
       "name": "database-lookup",
       "description": "Reproducible lookups against documented public database APIs (ClinPGx/CPIC, openFDA, DailyMed, ClinVar, dbSNP, gnomAD, ChEMBL, UniProt, SEC EDGAR, FRED and about seventy more) with explicit endpoints and provenance.",
       "category": "research",

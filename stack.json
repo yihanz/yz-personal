@@ -23,6 +23,7 @@
       "no-ai-slop@yz-personal": true,
       "unlazy@yz-personal": true,
       "cross-layer-drift-sweep@yz-personal": true,
+      "verify-all-runtime-sinks@yz-personal": true,
       "database-lookup@yz-personal": true,
       "scientific-critical-thinking@yz-personal": true,
       "figma-generate-project-plan@yz-personal": true,
@@ -67,7 +68,7 @@
       "heygen-com/hyperframes"
     ],
     "plugins": {
-      "yz-personal": ["no-ai-slop", "unlazy", "design-qa", "visual-verdict", "cross-layer-drift-sweep", "database-lookup", "scientific-critical-thinking", "figma-generate-project-plan", "figma-video-interaction-mapper", "text-to-lottie"]
+      "yz-personal": ["no-ai-slop", "unlazy", "design-qa", "visual-verdict", "cross-layer-drift-sweep", "verify-all-runtime-sinks", "database-lookup", "scientific-critical-thinking", "figma-generate-project-plan", "figma-video-interaction-mapper", "text-to-lottie"]
     },
     "note": "Customize > Plugins > Add marketplace, then turn on Sync automatically for each. Anthropic directory and knowledge-work plugins are installed from the directory and update on their own."
   },
