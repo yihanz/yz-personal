@@ -5,7 +5,7 @@
     "name": "Yihan Zhao"
   },
   "metadata": {
-    "description": "Aggregator for upstream skills that ship no marketplace of their own. Every entry points at its upstream repository, pinned to the last upstream commit that touched the skill; a scheduled job moves the pins forward, so Claude Code, Codex and claude.ai all receive upstream changes, and the git history records each one."
+    "description": "Single-skill plugins for upstream skills that ship no Claude marketplace of their own. Every entry points at its upstream repository, pinned to the last upstream commit that changed the skill; a daily job checks each plugin and moves its pin forward, so claude.ai, Cowork and Claude Code receive upstream changes and the git history records each one."
   },
   "plugins": [
     {

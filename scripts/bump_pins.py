@@ -5,8 +5,10 @@ Each plugin is handled on its own: a problem with one never stops the others.
 
 For each plugin entry:
   1. Find the newest upstream commit on `ref` that changed the plugin's skill folders.
-  2. Check the plugin at that commit (see check()). Only a commit that passes moves the pin.
-  3. Notice when the upstream repository starts publishing its own Claude marketplace,
+  2. Move only forward: that commit must descend from the current pin. Rewritten upstream
+     history (a force-push) stays on the current pin and is reported.
+  3. Check the plugin at that commit (see check()). Only a commit that passes moves the pin.
+  4. Notice when the upstream repository starts publishing its own Claude marketplace,
      which is the signal to install from the author and retire the entry here.
 
 holds.json lists plugins whose pin must not move (a deliberate freeze); they are still checked.
@@ -24,6 +26,7 @@ import json
 import os
 import pathlib
 import re
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -35,10 +38,11 @@ HOLDS = ROOT / "holds.json"
 
 MAX_FILES = 5000  # claude.ai and Cowork accept at most 5,000 files per plugin (and 200 MB, far above any entry here)
 
-# Paths, relative to the plugin root, that would add something other than skills.
-# These plugins are meant to carry instructions only: no hooks, programs, agents,
-# connectors or commands arriving through an automatic update.
-FORBIDDEN_EXACT = {
+# The default locations, relative to the plugin root, from which Claude loads something other
+# than the named skill (Claude Code plugins reference, "Standard layout"). Each plugin here is
+# meant to deliver its one skill and nothing else, so an upstream that adds any of these does not
+# move its pin. Names are compared case-insensitively, as macOS and Windows treat them.
+FORBIDDEN_FILES = {
     "hooks/hooks.json": "hooks, which run commands on the computer",
     ".mcp.json": "an MCP server",
     ".lsp.json": "a language server",
@@ -46,12 +50,14 @@ FORBIDDEN_EXACT = {
     "monitors/monitors.json": "background monitors",
     ".claude-plugin/plugin.json": "its own plugin manifest, which conflicts with this entry",
 }
-FORBIDDEN_PREFIX = {
-    "bin/": "a top-level bin/ folder, which claude.ai refuses to install",
-}
-FORBIDDEN_MD_DIRS = {
-    "agents/": "subagents",
-    "commands/": "commands",
+FORBIDDEN_FOLDERS = {  # folder: (what it would add, whether only .md files inside it load)
+    "bin/": ("a top-level bin/ folder, which claude.ai refuses to install", False),
+    "agents/": ("subagents", True),
+    "commands/": ("commands", True),
+    "output-styles/": ("output styles", False),
+    "workflows/": ("workflows", False),
+    "themes/": ("themes", False),
+    "skills/": ("a skills/ folder, whose skills would load beside the named one", False),
 }
 
 
@@ -75,6 +81,10 @@ class Repos:
             git("clone", "--quiet", "--filter=blob:none", "--no-checkout", "--single-branch", "--branch", ref, url, d)
             self.cache[key] = d
         return self.cache[key]
+
+    def cleanup(self):
+        for d in self.cache.values():
+            shutil.rmtree(d, ignore_errors=True)
 
     def ensure(self, d, sha):
         try:
@@ -125,22 +135,30 @@ def check(repos, d, plugin, src, sha):
     problems = []
     repos.ensure(d, sha)
     root = norm(src.get("path", "")) if src["source"] == "git-subdir" else ""
-    # Names only: asking for sizes would fetch every file one by one from a partial clone.
-    listing = git("ls-tree", "-r", "--name-only", "--full-tree", sha, *([root] if root else []), cwd=d)
-    names = {path[len(root) + 1:] if root else path for path in listing.splitlines()}
-    if not names:
+    # Names and modes only, NUL-separated so unusual file names arrive unquoted. Asking for
+    # sizes would fetch every file one by one from a partial clone.
+    listing = git("ls-tree", "-r", "-z", "--full-tree", sha, *([root] if root else []), cwd=d)
+    entries = {}
+    for item in listing.split("\0"):
+        if not item:
+            continue
+        meta, path = item.split("\t", 1)
+        entries[path[len(root) + 1:] if root else path] = meta.split()[0]
+    if not entries:
         return [f"its folder `{root or '(repository root)'}` does not exist at {sha[:7]}"]
+    names = set(entries)
     if len(names) > MAX_FILES:
         problems.append(f"{len(names)} files, over the {MAX_FILES}-file plugin limit")
-    for rel, why in FORBIDDEN_EXACT.items():
-        if rel in names:
+    links = sorted(n for n, mode in entries.items() if mode in ("120000", "160000"))
+    if links:
+        problems.append(f"now contains a symbolic link or submodule (`{links[0]}`), which could point outside it")
+    lower = {n.lower() for n in names}
+    for rel, why in FORBIDDEN_FILES.items():
+        if rel in lower:
             problems.append(f"now contains `{rel}`: {why}")
-    for prefix, why in FORBIDDEN_PREFIX.items():
-        if any(n.startswith(prefix) for n in names):
+    for prefix, (why, md_only) in FORBIDDEN_FOLDERS.items():
+        if any(n.startswith(prefix) and (n.endswith(".md") or not md_only) for n in lower):
             problems.append(f"now contains {why}")
-    for prefix, why in FORBIDDEN_MD_DIRS.items():
-        if any(n.startswith(prefix) and n.endswith(".md") and n.count("/") == 1 for n in names):
-            problems.append(f"now contains {why} in `{prefix}`")
     for s in skill_dirs(plugin):
         skill_md = norm(s, "SKILL.md")
         if skill_md not in names:
@@ -187,6 +205,16 @@ def main():
     holds = json.loads(HOLDS.read_text()) if HOLDS.exists() else {}
     repos = Repos()
     moves, problems = [], []
+    try:
+        run(data, holds, repos, moves, problems, check_only)
+    finally:
+        repos.cleanup()
+    write(data, moves)
+    report(problems)
+    return 1 if problems else 0
+
+
+def run(data, holds, repos, moves, problems, check_only):
     for plugin in data["plugins"]:
         name = plugin.get("name", "?")
         src = source_of(plugin)
@@ -214,6 +242,10 @@ def main():
             sha, date, subject = out.split("\t", 2)
             if sha == current or is_ancestor(d, sha, current):
                 continue  # the skill has not changed since the commit already pinned
+            if not is_ancestor(d, current, sha):
+                problems.append((name, f"upstream history was rewritten ({sha[:7]} does not descend from "
+                                       f"{current[:7]}); staying on {current[:7]} until checked by hand"))
+                continue
             found = check(repos, d, plugin, src, sha)
             if found:
                 problems.append((name, f"upstream {sha[:7]} ({date}) not taken, staying on {current[:7]}: "
@@ -224,6 +256,8 @@ def main():
         except Exception as e:  # one plugin's failure never blocks the others
             problems.append((name, f"could not be checked: {e}"))
 
+
+def write(data, moves):
     if moves:
         MARKETPLACE.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n")
         today = datetime.date.today().isoformat()
@@ -235,8 +269,6 @@ def main():
         else:
             CHANGELOG.write_text(text.rstrip("\n") + "\n\n## Upstream pin moves\n\n" + lines)
         print("Move upstream pins: " + ", ".join(m.split(" (")[0] for m in moves))
-    report(problems)
-    return 1 if problems else 0
 
 
 if __name__ == "__main__":

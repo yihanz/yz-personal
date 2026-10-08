@@ -20,7 +20,7 @@ Each plugin is one skill from one upstream repository. Adding the marketplace in
 | figma-video-interaction-mapper | Figma | figma/mcp-server-guide | `workflow-skills/video-interaction-mapper` |
 | text-to-lottie | Diffusion Studio | diffusionstudio/lottie | `skills/text-to-lottie` |
 
-Nothing is copied into this repository. Each entry points at its upstream folder with a `git-subdir` source and names the one skill it loads in `skills`, the form Anthropic's own marketplaces use for skill-only repositories (`learn-with-coursera` in `anthropics/knowledge-work-plugins`). Sibling skills in the same folder are not loaded.
+Nothing is copied into this repository. Each entry points at its upstream source and names the one skill it loads in `skills`. Ten use a `git-subdir` source at the folder that holds the skill, the form Anthropic's own marketplaces use for skill-only repositories (`learn-with-coursera` in `anthropics/knowledge-work-plugins`); sibling skills in that folder are not loaded. unlazy's skill is its repository root, so its entry is a `url` source with `skills: ["./"]`.
 
 ## How updates reach you
 
@@ -30,8 +30,8 @@ Nothing is copied into this repository. Each entry points at its upstream folder
 
 ## What the job checks before a pin moves
 
-- **Forward only.** A pin moves to a newer commit that changed the skill, never back.
-- **Skills only.** The plugin folder must hold the named `SKILL.md` with a name and description, and nothing that would arrive as something other than instructions: no `hooks/hooks.json`, `.mcp.json`, `agents/*.md`, `commands/*.md`, top-level `bin/` (which claude.ai refuses to install), `.lsp.json`, `settings.json` or its own `.claude-plugin/plugin.json`. An upstream that adds any of these stays on its last safe pin.
+- **Forward only.** A pin moves only to a commit that descends from the current pin and changed the skill. If upstream history is rewritten (a force-push), the plugin stays on its pin and the run says so.
+- **Skills only.** The plugin folder must hold the named `SKILL.md` with a name and description, and none of the default locations from which Claude loads anything else: `hooks/hooks.json`, `.mcp.json`, `.lsp.json`, `settings.json`, `monitors/monitors.json`, its own `.claude-plugin/plugin.json`, Markdown files anywhere under `agents/` or `commands/`, or anything under `bin/` (which claude.ai refuses to install), `output-styles/`, `workflows/`, `themes/` or a nested `skills/`. Names are compared without regard to case, and symbolic links and submodules are refused. An upstream that adds any of these stays on its last safe pin. A skill's own text can still ask Claude to do things, such as unlazy offering to install a Claude Code hook with your consent; the check covers what installs, not what a skill suggests.
 - **Within limits.** At most 5,000 files per plugin, the claude.ai and Cowork limit.
 - **Author channel.** When an upstream repository starts publishing its own Claude marketplace, the run says so: install from the author and remove the entry here.
 - **One at a time.** A problem with one plugin never stops the others from moving. Any problem fails the run, and GitHub notifies the workflow's creator; the run summary names each plugin and why.
@@ -50,7 +50,7 @@ Nothing is copied into this repository. Each entry points at its upstream folder
 
 - Claude Code: `claude plugin marketplace add yihanz/yz-personal`, then `claude plugin install <name>@yz-personal`. Turn on auto-update for the marketplace (`/plugin` > Marketplaces), or let `scripts/bootstrap.py` set it.
 - claude.ai and Cowork: Customize > Plugins > Add > Add marketplace > `yihanz/yz-personal`, turn on Sync automatically, then install the plugins you want one by one.
-- Codex loads plugin skills only from a `skills/` folder, which these upstream folders lack, so Codex gets the same skills through `npx skills` instead (see `stack.json`).
+- Codex does not subscribe to this marketplace. `stack.json` lists what Codex gets instead: some of these skills through `npx skills`, others from OpenAI's curated directory.
 
 ## Setting up a machine
 

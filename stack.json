@@ -68,9 +68,13 @@
       "heygen-com/hyperframes"
     ],
     "plugins": {
-      "yz-personal": ["no-ai-slop", "unlazy", "design-qa", "visual-verdict", "cross-layer-drift-sweep", "verify-all-runtime-sinks", "database-lookup", "scientific-critical-thinking", "figma-generate-project-plan", "figma-video-interaction-mapper", "text-to-lottie"]
+      "yz-personal": ["no-ai-slop", "unlazy", "design-qa", "visual-verdict", "cross-layer-drift-sweep", "verify-all-runtime-sinks"]
     },
-    "note": "Customize > Plugins > Add marketplace, then turn on Sync automatically for each. Anthropic directory and knowledge-work plugins are installed from the directory and update on their own."
+    "optional": {
+      "yz-personal": ["database-lookup", "scientific-critical-thinking", "figma-generate-project-plan", "figma-video-interaction-mapper", "text-to-lottie"],
+      "heygen-com/hyperframes": ["hyperframes"]
+    },
+    "note": "Customize > Plugins > Add marketplace, then turn on Sync automatically for each; adding a marketplace installs nothing, and each plugin is installed on its own. Plugins installed on the account also reach Claude Code as synced plugins, which is why claude_code.plugins lists only what the Mac installs locally. Anthropic directory and knowledge-work plugins are installed from the directory and update on their own."
   },
   "brew": ["agent-browser", "yt-dlp", "ffmpeg"]
 }
