@@ -66,7 +66,7 @@ def claude_code():
     # Only switch a plugin that is in the wrong state: the CLI fails on "already enabled".
     # A fresh install starts enabled.
     for pid, enabled in cc["plugins"].items():
-        if bool(installed.get(pid, {}).get("enabled", True)) != bool(enabled):
+        if (pid in installed or DRY) and bool(installed.get(pid, {}).get("enabled", True)) != bool(enabled):
             run(CLAUDE, "plugin", "enable" if enabled else "disable", pid, ok_fail=True)
     # Auto-update is off by default for third-party marketplaces; assert it in user settings,
     # after the CLI has written its own entries.
