@@ -64,7 +64,7 @@
       "Leonxlnx/taste-skill",
       "yihanz/yz-personal"
     ],
-    "directory": ["Humanizer (blader)", "Skills For Real Engineers (Matt Pocock)", "Raindrop.io (Raindrop; its own connection to Raindrop's server plus four bookmark skills, so the custom Raindrop connector is redundant)"],
+    "directory": ["Humanizer (blader)", "Skills For Real Engineers (Matt Pocock)", "Raindrop.io (Raindrop; four bookmark skills on the raindrop connector, which claude.ai bound to the one he added by URL, so keep that connector)"],
     "plugins": {
       "yz-personal": ["no-ai-slop", "marketing-os", "unlazy", "design-qa", "visual-verdict", "cross-layer-drift-sweep", "verify-all-runtime-sinks", "libraries-dev"]
     },
