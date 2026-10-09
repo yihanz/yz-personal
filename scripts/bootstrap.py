@@ -22,11 +22,19 @@ CLAUDE = shutil.which("claude") or str(HOME / ".local/bin/claude")
 ENV = dict(os.environ, DISABLE_TELEMETRY="1", HOMEBREW_NO_ANALYTICS="1")
 
 
-def run(*cmd, ok_fail=False):
+def run(*cmd, ok_fail=False, read=False):
+    """Run a command and return its stdout. A dry run only prints, except for
+    read-only commands (read=True), which it runs so it can tell what is missing."""
     print("+", " ".join(cmd))
-    if DRY:
+    if DRY and not read:
         return ""
-    r = subprocess.run(cmd, capture_output=True, text=True, env=ENV)
+    try:
+        r = subprocess.run(cmd, capture_output=True, text=True, env=ENV)
+    except OSError as e:
+        print(f"  ! not found: {cmd[0]} ({e.strerror})")
+        if not ok_fail:
+            sys.exit(127)
+        return ""
     if r.returncode:
         print(f"  ! exit {r.returncode}: " + (r.stdout + r.stderr).strip()[-600:])
         if not ok_fail:
@@ -34,14 +42,21 @@ def run(*cmd, ok_fail=False):
     return r.stdout
 
 
+def jload(text):
+    try:
+        return json.loads(text or "[]")
+    except ValueError:
+        return []
+
+
 def claude_code():
     cc = STACK["claude_code"]
-    have = run(CLAUDE, "plugin", "marketplace", "list", "--json", ok_fail=True)
-    known = {m.get("name") for m in json.loads(have or "[]")} if not DRY else set()
+    have = run(CLAUDE, "plugin", "marketplace", "list", "--json", ok_fail=True, read=True)
+    known = {m.get("name") for m in jload(have)}
     for name, repo in cc["marketplaces"].items():
         if name not in known:
             run(CLAUDE, "plugin", "marketplace", "add", repo, ok_fail=True)
-    installed = {p["id"]: p for p in json.loads(run(CLAUDE, "plugin", "list", "--json", ok_fail=True) or "[]")} if not DRY else {}
+    installed = {p.get("id"): p for p in jload(run(CLAUDE, "plugin", "list", "--json", ok_fail=True, read=True))}
     for pid, enabled in cc["plugins"].items():
         if pid not in installed:
             run(CLAUDE, "plugin", "install", pid, ok_fail=True)
@@ -56,6 +71,7 @@ def claude_code():
         ekm[name]["autoUpdate"] = True
     settings.setdefault("env", {}).update(cc.get("env", {}))
     if not DRY:
+        settings_path.parent.mkdir(parents=True, exist_ok=True)
         settings_path.write_text(json.dumps(settings, indent=2) + "\n")
 
 
@@ -78,8 +94,12 @@ def codex():
 def brew_and_updater():
     if platform.system() != "Darwin":
         return
-    brew = shutil.which("brew") or "/opt/homebrew/bin/brew"
-    run(brew, "install", *STACK["brew"], ok_fail=True)
+    brew = shutil.which("brew") or next(
+        (b for b in ("/opt/homebrew/bin/brew", "/usr/local/bin/brew") if os.access(b, os.X_OK)), None)
+    if brew:
+        run(brew, "install", *STACK["brew"], ok_fail=True)
+    else:
+        print("Homebrew not found; skipping " + ", ".join(STACK["brew"]))
     label = "com.yihan.agent-tools-update"
     plist = HOME / "Library/LaunchAgents" / f"{label}.plist"
     script = ROOT / "scripts" / "update_local.sh"
@@ -95,6 +115,7 @@ def brew_and_updater():
 """
     print("+ write", plist)
     if not DRY:
+        plist.parent.mkdir(parents=True, exist_ok=True)
         plist.write_text(body)
         uid = str(os.getuid())
         subprocess.run(["launchctl", "bootout", f"gui/{uid}/{label}"], capture_output=True)
@@ -104,6 +125,8 @@ def brew_and_updater():
 if __name__ == "__main__":
     if os.path.exists(CLAUDE):
         claude_code()
+    else:
+        print("Claude Code not found; skipping")
     codex()
     brew_and_updater()
     print("\nclaude.ai / Cowork (web app, Customize > Plugins > Add marketplace, then Sync automatically):")
