@@ -50,7 +50,8 @@
     "skills": [
       { "source": "Leonxlnx/unlazy" },
       { "source": "MiniMax-AI/minimax-code", "skills": ["cross-layer-drift-sweep"] },
-      { "source": "K-Dense-AI/scientific-agent-skills", "skills": ["database-lookup", "scientific-critical-thinking"] }
+      { "source": "K-Dense-AI/scientific-agent-skills", "skills": ["database-lookup", "scientific-critical-thinking"] },
+      { "source": "Jakubantalik/Libraries.dev", "skills": ["libraries-dev"] }
     ]
   },
   "skills_cli_existing": {
@@ -63,13 +64,14 @@
       "Leonxlnx/taste-skill",
       "yihanz/yz-personal"
     ],
-    "directory": ["Humanizer (blader)", "Skills For Real Engineers (Matt Pocock)", "Raindrop.io (Raindrop; same endpoint as the custom Raindrop connector it replaces, plus four skills)"],
+    "directory": ["Humanizer (blader)", "Skills For Real Engineers (Matt Pocock)"],
     "plugins": {
-      "yz-personal": ["no-ai-slop", "marketing-os", "unlazy", "design-qa", "visual-verdict", "cross-layer-drift-sweep", "verify-all-runtime-sinks"]
+      "yz-personal": ["no-ai-slop", "marketing-os", "unlazy", "design-qa", "visual-verdict", "cross-layer-drift-sweep", "verify-all-runtime-sinks", "libraries-dev"]
     },
     "optional": {
       "yz-personal": ["database-lookup", "scientific-critical-thinking", "figma-generate-project-plan", "figma-video-interaction-mapper", "text-to-lottie"],
-      "heygen-com/hyperframes": ["hyperframes"]
+      "heygen-com/hyperframes": ["hyperframes"],
+      "directory": ["Raindrop.io (four bookmark skills on the same Raindrop server his Raindrop connector already reaches)"]
     },
     "note": "Customize > Plugins > Add marketplace, then turn on Sync automatically for each; adding a marketplace installs nothing, and each plugin is installed on its own. impeccable and taste-skill update on their own (observed 8 Oct 2026). claude.ai refuses Sync automatically for a repository the Claude GitHub App cannot reach, and does not yet act on pushes to an account marketplace even when it allows it (anthropics/claude-code#93825), so yz-personal needs Check for updates; its pin job asks on a standing GitHub issue when pins move. Plugins listed in Anthropic's directory come from there (directory), which updates on its own. Plugins installed on the account also reach Claude Code as synced plugins, which is why claude_code.plugins lists only what the Mac installs locally. Anthropic directory and knowledge-work plugins are installed from the directory and update on their own."
   },

@@ -246,6 +246,26 @@
       "skills": [
         "./"
       ]
+    },
+    {
+      "name": "libraries-dev",
+      "description": "Jakub Antalik's seven Libraries.dev UI effect packages for AI interfaces (Border beam, Thinking orbs, Gooey, Voice, Bot avatars, Liquid metal, Image): where each fits in a project, and installing it with its documented options.",
+      "category": "design",
+      "homepage": "https://libraries.dev/skill",
+      "author": {
+        "name": "Jakub Antalik"
+      },
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/Jakubantalik/Libraries.dev.git",
+        "path": "skills/libraries-dev",
+        "ref": "main",
+        "sha": "5be5ecf9fd4b7d5a85386732ea496839e5e7cbee"
+      },
+      "strict": false,
+      "skills": [
+        "./"
+      ]
     }
   ]
 }

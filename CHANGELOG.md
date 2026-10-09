@@ -4,6 +4,7 @@ The scheduled pin job writes one line per upstream change under "Upstream pin mo
 
 ## Marketplace changes
 
+- 2026-10-08 · Added libraries-dev, Jakub Antalik's skill for his seven Libraries.dev UI effect packages. Its author ships it through `npx skills` and his own CLI, with no Claude marketplace or directory listing, so this is its auto-updating Claude route; it is markdown only and passes every check. Its Voice reference still documents the `processing` prop that voice-glow 0.3.0 removed, and its React Native install lines name packages that are not on npm.
 - 2026-10-08 · When pins move, the job now comments on one standing issue, assigned to the owner, asking for Check for updates on claude.ai, which does not yet act on pushes to an account marketplace (anthropics/claude-code#93825).
 - 2026-10-08 · Added marketing-os, whose author marketplace does not update on its own in claude.ai; here it gets the job's checks and the same single Check for updates as every other entry. An upstream that publishes its own marketplace is no longer reported as a reason to leave this one, since that marketplace may not update on its own either.
 - 2026-10-08 · Each entry now points at its skill's own folder with `skills: ["./"]`, so only that folder is packaged; claude.ai had been counting sibling skills' scripts against visual-verdict when the entries pointed at the parent folder. A change to the tools a skill pre-approves (`allowed-tools`) now holds its pin for review.

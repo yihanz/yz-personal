@@ -28,6 +28,7 @@ Each plugin is one skill from one upstream repository. Adding the marketplace in
 | figma-generate-project-plan | Figma | figma/mcp-server-guide | `workflow-skills/generate-project-plan` |
 | figma-video-interaction-mapper | Figma | figma/mcp-server-guide | `workflow-skills/video-interaction-mapper` |
 | text-to-lottie | Diffusion Studio | diffusionstudio/lottie | `skills/text-to-lottie` |
+| libraries-dev | Jakub Antalik | Jakubantalik/Libraries.dev | `skills/libraries-dev` |
 
 Nothing is copied into this repository. Each entry points at exactly one upstream skill folder and declares it with `skills: ["./"]`: eleven are `git-subdir` sources at the skill's own folder, and unlazy, whose skill is its repository root, is a `url` source. Only that folder is fetched, so nothing else from the upstream repository is packaged or loaded. claude.ai lists each as one skill, and Claude Code loads each as one skill with no agents, hooks or connectors.
 
