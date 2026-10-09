@@ -9,6 +9,7 @@ import json
 import os
 import pathlib
 import platform
+import re
 import shutil
 import subprocess
 import sys
@@ -57,10 +58,16 @@ def claude_code():
         if name not in known:
             run(CLAUDE, "plugin", "marketplace", "add", repo, ok_fail=True)
     installed = {p.get("id"): p for p in jload(run(CLAUDE, "plugin", "list", "--json", ok_fail=True, read=True))}
+    added = [pid for pid in cc["plugins"] if pid not in installed]
+    for pid in added:
+        run(CLAUDE, "plugin", "install", pid, ok_fail=True)
+    if added and not DRY:
+        installed = {p.get("id"): p for p in jload(run(CLAUDE, "plugin", "list", "--json", ok_fail=True, read=True))}
+    # Only switch a plugin that is in the wrong state: the CLI fails on "already enabled".
+    # A fresh install starts enabled.
     for pid, enabled in cc["plugins"].items():
-        if pid not in installed:
-            run(CLAUDE, "plugin", "install", pid, ok_fail=True)
-        run(CLAUDE, "plugin", "enable" if enabled else "disable", pid, ok_fail=True)
+        if bool(installed.get(pid, {}).get("enabled", True)) != bool(enabled):
+            run(CLAUDE, "plugin", "enable" if enabled else "disable", pid, ok_fail=True)
     # Auto-update is off by default for third-party marketplaces; assert it in user settings,
     # after the CLI has written its own entries.
     settings_path = HOME / ".claude" / "settings.json"
@@ -82,8 +89,15 @@ def codex():
         return
     for name, repo in cx["marketplaces"].items():
         run(CODEX, "plugin", "marketplace", "add", repo, ok_fail=True)
+    # `codex plugin list` prints "<id>  installed, enabled  ..." or "<id>  not installed  ...".
+    have = set()
+    for line in run(CODEX, "plugin", "list", ok_fail=True, read=True).splitlines():
+        cols = re.split(r"\s{2,}", line.strip())
+        if len(cols) > 1 and cols[1].startswith("installed"):
+            have.add(cols[0])
     for pid in cx["plugins"]:
-        run(CODEX, "plugin", "add", pid, ok_fail=True)
+        if pid not in have:
+            run(CODEX, "plugin", "add", pid, ok_fail=True)
     for s in cx["skills"]:
         cmd = ["npx", "-y", "skills@latest", "add", s["source"], "-g", "-a", "codex", "-y"]
         for name in s.get("skills", []):
