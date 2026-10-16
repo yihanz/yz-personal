@@ -19,3 +19,4 @@ The scheduled pin job writes one line per upstream change under "Upstream pin mo
 
 ## Upstream pin moves
 
+- 2026-10-16 · libraries-dev 5be5ecf -> a47e66c (2026-10-15: Metal: drop the React Native tab, fix the Swift UI example)
