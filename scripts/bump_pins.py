@@ -8,7 +8,8 @@ For each plugin entry:
   2. Move only forward: that commit must descend from the current pin. Rewritten upstream
      history (a force-push) stays on the current pin and is reported.
   3. Check the plugin at that commit (see check()). Only a commit that passes moves the pin.
-     A change to the tools a skill pre-approves (`allowed-tools`) also holds the pin for review.
+     A change to the tools a skill pre-approves (`allowed-tools`) also holds the pin for review,
+     and so does a change to the hooks a skill defines in its SKILL.md frontmatter.
 
 holds.json lists plugins whose pin must not move (a deliberate freeze); they are still checked.
 
@@ -139,6 +140,30 @@ def allowed_tools(repos, d, plugin, src, sha):
     return found
 
 
+def frontmatter_hooks(repos, d, plugin, src, sha):
+    """The `hooks` each named skill defines in its SKILL.md frontmatter at `sha`, as {skill folder: text}.
+
+    These hooks run commands on the computer while the skill is in use, so a change to them,
+    including a skill gaining or losing them, holds the pin for review like `allowed-tools`.
+    """
+    root = norm(src.get("path", "")) if src["source"] == "git-subdir" else ""
+    found = {}
+    for s in skill_dirs(plugin):
+        try:
+            text = git("show", f"{sha}:{norm(root, s, 'SKILL.md')}", cwd=d)
+        except RuntimeError:
+            continue
+        m = re.match(r"^---\r?\n(.*?)\r?\n---", text, re.S)
+        lines, inside = [], False
+        for line in (m.group(1) if m else "").splitlines():
+            if re.match(r"^[A-Za-z0-9_-]+:", line):  # a top-level key starts or ends the hooks block
+                inside = line.startswith("hooks:")
+            if inside:
+                lines.append(line.strip())
+        found[s or "."] = " ".join(" ".join(lines).split())
+    return found
+
+
 def frontmatter_keys(text):
     m = re.match(r"^---\r?\n(.*?)\r?\n---", text, re.S)
     if not m:
@@ -253,6 +278,8 @@ def run(data, holds, repos, moves, problems, check_only):
                 shown = lambda v: "; ".join(x or "none" for x in v.values()) or "none"
                 found.append(f"the tools it pre-approves changed from {shown(before)} to {shown(after)}; "
                              "review, then move the pin by hand")
+            if frontmatter_hooks(repos, d, plugin, src, current) != frontmatter_hooks(repos, d, plugin, src, sha):
+                found.append("the hooks its SKILL.md frontmatter defines changed; review them, then move the pin by hand")
             if found:
                 problems.append((name, f"upstream {sha[:7]} ({date}) not taken, staying on {current[:7]}: "
                                        + "; ".join(found)))

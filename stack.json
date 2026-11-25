@@ -59,18 +59,17 @@
   "claude_ai": {
     "github_marketplaces": [
       "pbakaus/impeccable",
-      "Leonxlnx/taste-skill",
       "yihanz/yz-personal"
     ],
     "directory": ["Humanizer (blader)", "Skills For Real Engineers (Matt Pocock)", "Raindrop.io (Raindrop; four bookmark skills on the raindrop connector, which claude.ai bound to the one he added by URL, so keep that connector)"],
     "plugins": {
-      "yz-personal": ["no-ai-slop", "marketing-os", "unlazy", "design-qa", "cross-layer-drift-sweep", "verify-all-runtime-sinks", "libraries-dev"]
+      "yz-personal": ["no-ai-slop", "marketing-os", "unlazy", "design-qa", "cross-layer-drift-sweep", "verify-all-runtime-sinks", "libraries-dev", "taste-skill"]
     },
     "optional": {
       "yz-personal": ["database-lookup", "scientific-critical-thinking", "figma-generate-project-plan", "figma-video-interaction-mapper", "text-to-lottie", "visual-verdict"],
       "heygen-com/hyperframes": ["hyperframes"]
     },
-    "note": "Customize > Plugins > Add marketplace, then turn on Sync automatically for each; adding a marketplace installs nothing, and each plugin is installed on its own. impeccable updates on its own (observed 8 Oct 2026); taste-skill did not (claude.ai still held 2.0.0 on 17 Nov 2026 while 2.5.1 was out), so it needs Check for updates too. claude.ai refuses Sync automatically for a repository the Claude GitHub App cannot reach, and does not yet act on pushes to an account marketplace even when it allows it (anthropics/claude-code#93825), so yz-personal needs Check for updates; its pin job asks on a standing GitHub issue when pins move. Plugins listed in Anthropic's directory come from there (directory), which updates on its own. Plugins installed on the account also reach Claude Code as synced plugins, which is why claude_code.plugins lists only what the Mac installs locally. Anthropic directory and knowledge-work plugins are installed from the directory and update on their own."
+    "note": "Customize > Plugins > Add marketplace, then turn on Sync automatically for each; adding a marketplace installs nothing, and each plugin is installed on its own. impeccable updates on its own (observed 8 Oct 2026). taste-skill comes through yz-personal: its own marketplace did not update on its own (claude.ai still held 2.0.0 on 17 Nov 2026 while 2.5.1 was out), and on 25 Nov 2026 claude.ai refused it outright because it ships no plugin.json and does not set strict: false. claude.ai refuses Sync automatically for a repository the Claude GitHub App cannot reach, and does not yet act on pushes to an account marketplace even when it allows it (anthropics/claude-code#93825), so yz-personal needs Check for updates; its pin job asks on a standing GitHub issue when pins move. Plugins listed in Anthropic's directory come from there (directory), which updates on its own. Plugins installed on the account also reach Claude Code as synced plugins, which is why claude_code.plugins lists only what the Mac installs locally. Anthropic directory and knowledge-work plugins are installed from the directory and update on their own."
   },
   "brew": ["agent-browser", "yt-dlp", "ffmpeg", "vercel"]
 }

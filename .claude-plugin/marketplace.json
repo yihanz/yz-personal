@@ -266,6 +266,26 @@
       "skills": [
         "./"
       ]
+    },
+    {
+      "name": "taste-skill",
+      "description": "Art direction for professional company websites at the figma.com and x.ai level: one section per screen, real photographs and product UI, effects kept for tech and gaming pages, and a real-browser checker and finish gate.",
+      "category": "design",
+      "homepage": "https://github.com/Leonxlnx/taste-skill",
+      "author": {
+        "name": "Leon Lin"
+      },
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/Leonxlnx/taste-skill.git",
+        "path": "skills/taste-skill",
+        "ref": "main",
+        "sha": "b900a8075fd7a2449bd6f414a2ae79657e95363c"
+      },
+      "strict": false,
+      "skills": [
+        "./"
+      ]
     }
   ]
 }
