@@ -20,6 +20,7 @@ The scheduled pin job writes one line per upstream change under "Upstream pin mo
 
 ## Upstream pin moves
 
+- 2026-11-26 · libraries-dev f55c602 -> d058179 (2026-11-26: Model License 1.6: monthly users limits and Enterprise)
 - 2026-11-25 · libraries-dev af119de -> f55c602 (2026-11-24: Neutral mood, hello@libraries.dev contact, Models menu line)
 - 2026-11-24 · libraries-dev a47e66c -> af119de (2026-11-24: Adaptive UI becomes Mood recognition)
 - 2026-10-16 · libraries-dev 5be5ecf -> a47e66c (2026-10-15: Metal: drop the React Native tab, fix the Swift UI example)
