@@ -2,7 +2,7 @@ name: Move upstream pins
 
 on:
   schedule:
-    - cron: "17 9 * * *"
+    - cron: "17 9 * * 0"  # Sundays: upstream changes arrive as one weekly batch
   workflow_dispatch:
   push:
     branches: [main]
@@ -15,7 +15,6 @@ on:
 permissions:
   contents: write
   actions: write
-  issues: write
 
 concurrency:
   group: move-pins
@@ -42,8 +41,6 @@ jobs:
       - name: Move pins to the newest safe upstream commits
         if: github.event_name != 'push'
         id: move
-        env:
-          MOVES_FILE: ${{ runner.temp }}/moves.md
         run: |
           set +e
           python3 scripts/bump_pins.py > "$RUNNER_TEMP/msg.txt"
@@ -59,14 +56,6 @@ jobs:
           git commit -m "$MSG"
           git pull --rebase --quiet origin main
           git push
-
-      # claude.ai does not act on pushes to an account marketplace (anthropics/claude-code#93825),
-      # so the owner is asked, on one standing issue, to select Check for updates.
-      - name: Ask for Check for updates on claude.ai
-        if: github.event_name != 'push' && steps.move.outputs.msg != ''
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: bash scripts/ask_for_update.sh "$RUNNER_TEMP/moves.md"
 
       # GitHub turns off scheduled workflows in a public repository after 60 days without
       # repository activity. A quiet stretch upstream would otherwise stop this job silently,
